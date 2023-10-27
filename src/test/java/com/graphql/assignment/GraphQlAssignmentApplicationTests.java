@@ -1,13 +1,14 @@
 package com.graphql.assignment;
 
-import org.junit.jupiter.api.Test;
+import com.netflix.graphql.dgs.DgsQueryExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class GraphQlAssignmentApplicationTests {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class GraphQlAssignmentApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+    @Autowired
+    public DgsQueryExecutor dgsQueryExecutor;
+
 
 }
