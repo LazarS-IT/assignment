@@ -1,32 +1,48 @@
 package com.graphql.assignment.fetcher;
 
-import com.graphql.assignment.exception.EntityNotFoundException;
+import com.graphql.assignment.model.CreateUserInput;
+import com.graphql.assignment.model.DeleteUserStatus;
+import com.graphql.assignment.model.UpdateUserInput;
 import com.graphql.assignment.model.User;
-import com.graphql.assignment.repository.UserRepository;
+import com.graphql.assignment.service.UserService;
 import com.netflix.graphql.dgs.DgsComponent;
+import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
 @DgsComponent
 public class UserFetcher {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserFetcher(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserFetcher(UserService userService) {
+        this.userService = userService;
     }
 
     @DgsQuery(field = "users")
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @DgsQuery(field = "user")
-    public User getUser(@InputArgument String id) {
-        return userRepository.findById(Long.parseLong(id))
-                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id: %s not found", id), HttpStatus.NOT_FOUND.toString()));
+    public User getUserById(@InputArgument String id) {
+        return userService.getUserById(Long.parseLong(id));
+    }
+
+    @DgsMutation
+    public User createUser(@InputArgument CreateUserInput input) {
+        return userService.createUser(input);
+    }
+
+    @DgsMutation
+    public User updateUser(@InputArgument String id, @InputArgument UpdateUserInput input) {
+        return userService.updateUser(Long.parseLong(id), input);
+    }
+
+    @DgsMutation
+    public DeleteUserStatus deleteUser(@InputArgument String id) {
+        return userService.deleteUser(Long.valueOf(id));
     }
 }
