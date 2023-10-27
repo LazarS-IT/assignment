@@ -33,6 +33,21 @@ public class GenericExceptionHandler implements DataFetcherExceptionHandler {
                     .build();
 
             return CompletableFuture.completedFuture(result);
+        } else if (handlerParameters.getException() instanceof UserAlreadyExistsException) {
+            Map<String, Object> debugInfo = new HashMap<>();
+            debugInfo.put("error", ((UserAlreadyExistsException) handlerParameters.getException()).getValidationError());
+
+            GraphQLError graphqlError = TypedGraphQLError.newInternalErrorBuilder()
+                    .message("User already exists.")
+                    .debugInfo(debugInfo)
+                    .errorType(ErrorType.INTERNAL)
+                    .path(handlerParameters.getPath()).build();
+
+            DataFetcherExceptionHandlerResult result = DataFetcherExceptionHandlerResult.newResult()
+                    .error(graphqlError)
+                    .build();
+
+            return CompletableFuture.completedFuture(result);
         } else {
             return DataFetcherExceptionHandler.super.handleException(handlerParameters);
         }

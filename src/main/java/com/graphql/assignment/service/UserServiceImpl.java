@@ -1,6 +1,7 @@
 package com.graphql.assignment.service;
 
 import com.graphql.assignment.exception.EntityNotFoundException;
+import com.graphql.assignment.exception.UserAlreadyExistsException;
 import com.graphql.assignment.model.CreateUserInput;
 import com.graphql.assignment.model.DeleteUserStatus;
 import com.graphql.assignment.model.UpdateUserInput;
@@ -56,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(CreateUserInput userInput) {
+        if (userRepository.findByEmail(userInput.getEmail()).isPresent())
+            throw new UserAlreadyExistsException(String.format("User with email: %s already exists.", userInput.getEmail()), String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+
         User user = User.builder().name(userInput.getName()).email(userInput.getEmail()).build();
         return userRepository.save(user);
     }
