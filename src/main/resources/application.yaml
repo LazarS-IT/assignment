@@ -15,12 +15,6 @@ spring:
     console:
       enabled: true
 
-springdoc:
-  api-docs:
-    path: /api/v3/api-docs
-  swagger-ui:
-    path: /api/v3/index.html
-
 dgs:
   graphql:
     schema-locations: classpath*:graphql/**/*.graphql*
