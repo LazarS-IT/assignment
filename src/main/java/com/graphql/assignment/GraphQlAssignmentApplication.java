@@ -3,7 +3,7 @@ package com.graphql.assignment;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.graphql.assignment")
 public class GraphQlAssignmentApplication {
 
     public static void main(String[] args) {
