@@ -17,3 +17,5 @@ To test GraphQL endpoints you can navigate to `tomcatserver:8080/assignment/grap
 Included in the project is postman collection that will show you all endpoint possibilities.
 
 `/src/main/java/resources/postman/graphql.postman_collection.json`
+
+disclaimer: do include `Basic Auth` when accessing users query with username `admin` and password `admin`
